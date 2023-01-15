@@ -26,21 +26,23 @@ $ sudo systemctl restart systemd-binfmt.service
 ```
 
 ## Setup
-1) Change the hostname to the one you want in SDCard_Setup_Arch_BPiM2Zero_Armv7.sh
-* HOSTNAME=
-
-2) Change the personalization parameters in Machine_Setup_Arch.sh
-* USERNAME=
-* PASSWORD=
-* ROOTPWD=
-* SSHPORT=
-* ESSID_NAME=
-* WIFI_PWD=
-
+1) Change the hostname to the one you want in _SDCard\_Setup\_Arch\_BPiM2Zero\_Armv7.sh_
+```
+HOSTNAME=
+```
+2) Change the personalization parameters in _Machine\_Setup\_Arch.sh_
+```
+USERNAME=
+PASSWORD=
+ROOTPWD=
+SSHPORT=
+ESSID_NAME=
+WIFI_PWD=
+```
 3) Edit the list to add or remove packages you want to pre-installed in your setup
    in pkglist.txt
 
-4) Personalize your configuration for root and local user in root_pref.sh and user_pref.sh
+4) Personalize your configuration for root and local user in _root\_pref.sh and user\_pref.sh_
    respectively.
 
 ## Installation:
@@ -59,12 +61,12 @@ $ sudo ./SDCard_Setup_ArchBPiM2Zero_Arm7.sh sde
 ## Encountered problems:
 1) No HDMI display no matter what image I burn:
 > The provided Mini HDMI to full HDMI converter did not work. I had to get a 
-   direct cable to get it to work.
+direct cable to get it to work.
 
 2) When compiling on the board, it sometimes kicks me back to login screen:
->> The board only has 512MB of memory, you'll need to create a swapfile.
-   When you're done, delete that swapfile because it's not good to keep it 
-   in a MicroSD card.
+> The board only has 512MB of memory, you'll need to create a swapfile.
+When you're done, delete that swapfile because it's not good to keep it 
+in a MicroSD card.
 ```   
 # Create swapfile
 $ sudo dd if=/dev/zero of=/swapfile bs=1M count=1024 status=progress
@@ -78,8 +80,8 @@ $ sudo swapoff /swapfile
 $ sudo rm -f /swapfile
 ```
 3) I can't install and configure everything during arch-chroot:
->> Not everything can be done during arch-chroot, you'll need to log into the board 
-   (physically or remotely) and run the commands. To make it easier, I recommend
-   generate the scripts while in arch-chroot so that once logged in, you can 
-   simply run the scripts in the designated folders or have them run on 
-   first boot.
+> Not everything can be done during arch-chroot, you'll need to log into the board 
+(physically or remotely) and run the commands. To make it easier, I recommend
+generate the scripts while in arch-chroot so that once logged in, you can 
+simply run the scripts in the designated folders or have them run on 
+first boot.
