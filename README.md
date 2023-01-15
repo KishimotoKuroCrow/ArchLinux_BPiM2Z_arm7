@@ -7,10 +7,9 @@
 * Micro USB for power
 * Micro USB OTG
 * Mini HDMI (provided converter doesn't work, use direct cable)
--> More info: [BPi M2 Zero Wiki](https://wiki.banana-pi.org/Banana_Pi_BPI-M2_Zero)
+* More info: [BPi M2 Zero Wiki](https://wiki.banana-pi.org/Banana_Pi_BPI-M2_Zero)
 
 ## Pre-requisites (guide written in January 2023)
-
 * Arch Linux HOST (my script uses arch-chroot)
 * Install the following list of packages from official repository
 ```
@@ -25,6 +24,7 @@ $ sudo pacman -S parted \
 ```
 $ sudo systemctl restart systemd-binfmt.service
 ```
+
 ## Setup
 1) Change the hostname to the one you want in SDCard_Setup_Arch_BPiM2Zero_Armv7.sh
 * HOSTNAME=
@@ -58,7 +58,7 @@ $ sudo ./SDCard_Setup_ArchBPiM2Zero_Arm7.sh sde
 
 ## Encountered problems:
 1) No HDMI display no matter what image I burn:
->> The provided Mini HDMI to full HDMI converter did not work. I had to get a 
+> The provided Mini HDMI to full HDMI converter did not work. I had to get a 
    direct cable to get it to work.
 
 2) When compiling on the board, it sometimes kicks me back to login screen:
@@ -66,16 +66,16 @@ $ sudo ./SDCard_Setup_ArchBPiM2Zero_Arm7.sh sde
    When you're done, delete that swapfile because it's not good to keep it 
    in a MicroSD card.
 ```   
-   # Create swapfile
-   $ sudo dd if=/dev/zero of=/swapfile bs=1M count=1024 status=progress
-   $ sudo chmod 0600 /swapfile
-   $ sudo mkswap -U clear /swapfile
-   $ sudo swapon /swapfile
-   $ sync
+# Create swapfile
+$ sudo dd if=/dev/zero of=/swapfile bs=1M count=1024 status=progress
+$ sudo chmod 0600 /swapfile
+$ sudo mkswap -U clear /swapfile
+$ sudo swapon /swapfile
+$ sync
 
-   # Delete swapfile
-   $ sudo swapoff /swapfile
-   $ sudo rm -f /swapfile
+# Delete swapfile
+$ sudo swapoff /swapfile
+$ sudo rm -f /swapfile
 ```
 3) I can't install and configure everything during arch-chroot:
 >> Not everything can be done during arch-chroot, you'll need to log into the board 
