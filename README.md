@@ -26,26 +26,26 @@ $ sudo systemctl restart systemd-binfmt.service
 ```
 
 ## Setup
-1) Change the hostname to the one you want in _SDCard\_Setup\_Arch\_BPiM2Zero\_Armv7.sh_
+1) Change the hostname to the one you want in **_SDCard\_Setup\_Arch\_BPiM2Zero\_Armv7.sh_**
 ```
-HOSTNAME=
+HOSTNAME=ALA_BPiM2Z
 ```
-2) Change the personalization parameters in _Machine\_Setup\_Arch.sh_
+2) Change the personalization parameters in **_Machine\_Setup\_Arch.sh_**
 ```
-USERNAME=
-PASSWORD=
-ROOTPWD=
-SSHPORT=
-ESSID_NAME=
-WIFI_PWD=
+USERNAME=bpim2z         # Username of the new account
+PASSWORD=monkey         # Password of the new account
+ROOTPWD=bananazero      # Root Password
+SSHPORT=16500           # New SSH port instead of the default 22
+ESSID_NAME=MyWifiName   # Wifi hotspot to connect to
+WIFI_PWD=MyWifiPassword # Plain text Wifi password
 ```
 3) Edit the list to add or remove packages you want to pre-installed in your setup
    in pkglist.txt
 
-4) Personalize your configuration for root and local user in _root\_pref.sh and user\_pref.sh_
+4) Personalize your configuration for root and local user in **_root\_pref.sh_** and **_user\_pref.sh_**
    respectively.
 
-## Installation:
+## Installation
 Insert your MicroSD card into your machine and determine the disk full partition
 ```
 $ sudo fdisk -l
@@ -56,9 +56,29 @@ It'll take a while to complete.
 ```
 $ sudo ./SDCard_Setup_ArchBPiM2Zero_Arm7.sh sde
 ```
-## Explanation:
+## Quick Explanation
+1) SDCard\_Setup\_ArchBPiM2Zero\_Arm7.sh
+* Creates the necessary partitions
+* Download the latest Arch Linux ARMv7 image
+* Create mount points, extract the image above, copy scripts, chroot for configuration, generate boot scripts, and burn U-Boot.
 
-## Encountered problems:
+2) Machine\_Setup\_Arch.sh
+* Called by **_SDCard\_Setup\_ArchBPiM2Zero\_Arm7.sh_**
+* Initialize the Arch Linux system
+* Set locale and localtime
+* Delete default user "alarm" and create a new user account
+* Setup networking
+* Setup scripts for faster boot and reboot/shutdown scripts
+
+3) root\_pref.sh
+* Called by **_Machine\_Setup\_Arch.sh_**
+* Setup root preferences
+
+4) user\_pref.sh
+* Called by **_Machine\_Setup\_Arch.sh_**
+* Setup additional user preferences
+
+## Encountered problems
 1) No HDMI display no matter what image I burn:
 > The provided Mini HDMI to full HDMI converter did not work. I had to get a 
 direct cable to get it to work.
@@ -85,3 +105,13 @@ $ sudo rm -f /swapfile
 generate the scripts while in arch-chroot so that once logged in, you can 
 simply run the scripts in the designated folders or have them run on 
 first boot.
+
+## References
+[https://unix.stackexchange.com/questions/501626/create-bootable-sd-card-with-parted]
+(https://unix.stackexchange.com/questions/501626/create-bootable-sd-card-with-parted)
+[https://bbs.archlinux.org/viewtopic.php?id=204252]
+(https://bbs.archlinux.org/viewtopic.php?id=204252)
+[https://itsfoss.com/install-arch-raspberry-pi/]
+(https://itsfoss.com/install-arch-raspberry-pi/)
+[https://github.com/sosyco/bananapim2zero/blob/master/docs/installation\_english.md]
+(https://github.com/sosyco/bananapim2zero/blob/master/docs/installation\_english.md)
