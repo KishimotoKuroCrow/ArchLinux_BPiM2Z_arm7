@@ -70,8 +70,9 @@ $ ssh -p 16500 MyBananaPi
 ## Quick Explanation
 ###### SDCard\_Setup\_ArchBPiM2Zero\_Arm7.sh
 * Creates the necessary partitions
-* Download the latest Arch Linux ARMv7 image
-* Create mount points, extract the image above, copy scripts, chroot for configuration, generate boot scripts, and burn U-Boot.
+* Download the latest Arch Linux ARMv7 image (if not already done)
+* Create mount points, extract the image above, copy scripts, chroot for configuration, generate boot scripts
+* Create the U-Boot binary file (if not already done) and burn it.
 
 ###### Machine\_Setup\_Arch.sh
 * Called by **_SDCard\_Setup\_ArchBPiM2Zero\_Arm7.sh_**
