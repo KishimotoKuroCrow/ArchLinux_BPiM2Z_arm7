@@ -118,7 +118,7 @@ simply run the scripts in the designated folders or have them run on
 first boot.
 
 ## References
-https://unix.stackexchange.com/questions/501626/create-bootable-sd-card-with-parted
-https://bbs.archlinux.org/viewtopic.php?id=204252
-https://itsfoss.com/install-arch-raspberry-pi/
+https://unix.stackexchange.com/questions/501626/create-bootable-sd-card-with-parted \
+https://bbs.archlinux.org/viewtopic.php?id=204252 \
+https://itsfoss.com/install-arch-raspberry-pi/ \
 https://github.com/sosyco/bananapim2zero/blob/master/docs/installation\_english.md
