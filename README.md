@@ -40,7 +40,7 @@ ESSID_NAME=MyWifiName   # Wifi hotspot to connect to
 WIFI_PWD=MyWifiPassword # Plain text Wifi password
 ```
 3) Edit the list to add or remove packages you want to pre-installed in your setup
-   in pkglist.txt
+   in **_pkglist.txt_**
 
 4) Personalize your configuration for root and local user in **_root\_pref.sh_** and **_user\_pref.sh_**
    respectively.
