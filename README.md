@@ -10,12 +10,12 @@
 * More info: [BPi M2 Zero Wiki](https://wiki.banana-pi.org/Banana_Pi_BPI-M2_Zero)
 
 ## Table of Contents
-[Pre-Requisites](#prerequisites)
-[Setup](#setup)
-[Installation](#installation)
-[Quick Explanation](#explanation)
-[Encountered Problems](#problems)
-[References](#references)
+* [Pre-Requisites](#prerequisites)
+* [Setup](#setup)
+* [Installation](#installation)
+* [Quick Explanation](#explanation)
+* [Encountered Problems](#problems)
+* [References](#references)
 
 <a name="prerequisites"></a>
 ## Pre-requisites (guide written in January 2023)
