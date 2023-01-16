@@ -59,13 +59,15 @@ $ sudo ./SDCard_Setup_ArchBPiM2Zero_Arm7.sh sde
 At the end of a successful installation, you'll end up with the file "BPiM2Z\_key". This is used to connect
 to your board by SSH.  On your host, you'll need to put that file in **~/.ssh/**. Then, insert the MicroSD card in
 your BananaPi and boot it (close to your wifi hotspot if you don't have an antenna), find out
-the IP address that's assigned to your board and then create the file **~/.ssh/config** (Linux or Windows)
+the IP address that's assigned to your board and then create the file **~/.ssh/config** as follows (Linux or Windows)
 ```
 Host MyBananaPi INSERT_IP_ADDR_HERE
 Hostname INSERT_IP_ADDR_HERE
 IdentityFile ~/.ssh/BPiM2Z_key
-user bpiM2z # same as above
-
+user bpim2z # same as above
+```
+Then, connect to your board remotely using the SSH port number.
+```
 $ ssh -p 16500 MyBananaPi
 ```
 ## Quick Explanation
