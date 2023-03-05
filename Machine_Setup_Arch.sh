@@ -104,7 +104,7 @@ chown -R $USERNAME /home/$USERNAME/.ssh
 
 sed -i "s/#Port 22/Port ${SSHPORT}/g" /etc/ssh/sshd_config
 sed -i 's/#PermitEmptyPasswords/PermitEmptyPasswords/g' /etc/ssh/sshd_config
-sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 sed -i 's/#X11Forwarding/X11Forwarding/g' /etc/ssh/sshd_config
 echo "AllowUsers $USERNAME" >> /etc/ssh/sshd_config
 echo 'systemctl start sshd.service; sleep 1' >> $STARTSCR
