@@ -67,10 +67,10 @@ It'll take a while to complete.
 ```
 $ sudo ./SDCard_Setup_ArchBPiM2Zero_Arm7.sh sde
 ```
-At the end of a successful installation, you'll end up with the file "BPiM2Z\_key". This is used to connect
+At the end of a successful installation, you'll end up with the file "Hostname\_key" in the /_SHARE_ directory. This is used to connect
 to your board by SSH.  On your host, you'll need to put that file in **~/.ssh/**. Then, insert the MicroSD card in
 your BananaPi and boot it (close to your wifi hotspot if you don't have an antenna). Next, find out
-the IP address that's assigned to your board and then create the file **~/.ssh/config** on your host as follows (Linux or Windows)
+the IP address that's assigned to your board and then create the file **~/.ssh/config** on your host as follows (Linux or Windows).
 ```
 Host MyBananaPi INSERT_IP_ADDR_HERE
 Hostname INSERT_IP_ADDR_HERE
@@ -81,11 +81,12 @@ Then, connect to your board remotely using the SSH port number.
 ```
 $ ssh -p 16500 MyBananaPi
 ```
+SSH login by username and password is also possible, but highly discouraged.
 
 <a name="explanation"></a>
 ## Quick Explanation
 ###### SDCard\_Setup\_ArchBPiM2Zero\_Arm7.sh
-* Creates the necessary partitions
+* Creates the necessary partitions, a _SHARE_ FAT32 partition is used to share files between platforms.
 * Download the latest Arch Linux ARMv7 image (if not already done)
 * Create mount points, extract the image above, copy scripts, chroot for configuration, generate boot scripts
 * Create the U-Boot binary file (if not already done) and burn it.
