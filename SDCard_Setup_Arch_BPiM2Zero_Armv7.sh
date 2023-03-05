@@ -10,27 +10,33 @@
 HOSTNAME=ALA_BPiM2Z
 
 # Partition the SD card with input as the disk designation
-# 1st partition: boot: 256MB (200MB should be more than enough)
-# 2nd partition: remaining
+# 1st partition: /boot: 256MB (200MB should be more than enough)
+# 2nd partition: /_SHARE_: 32MB (VFAT, to share across different platform)
+# 3rd partition: / : remaining
 CURRENTDIR=$(pwd)
 ARCHARMIMG=ArchLinuxARM-armv7-latest
 DISK=$1
 MOUNTROOT=/mnt/BPM2Z_Root
+MOUNTSHARE=$MOUNTROOT/_SHARE_
 MOUNTBOOT=$MOUNTROOT/boot
 FSTABFILE=$MOUNTROOT/etc/fstab
 parted --script /dev/$DISK \
    mklabel msdos \
    mkpart primary ext4 1MiB 256MiB \
-   mkpart primary ext4 256MiB 100% \
+   mkpart primary ext4 256MiB 384MiB \
+   mkpart primary ext4 384MiB 100% \
    set 1 boot on \
    set 1 lba on
 mkfs.ext4 /dev/${DISK}1 -O ^has_journal,extent
-mkfs.ext4 /dev/${DISK}2 -O ^has_journal,extent
+mkfs.fat -F32 /dev/${DISK}2
+mkfs.ext4 /dev/${DISK}3 -O ^has_journal,extent
 
 # Mount the paritions
-mkdir $MOUNTROOT
-mount /dev/${DISK}2 $MOUNTROOT
-mkdir $MOUNTBOOT
+mkdir -p $MOUNTROOT
+mount /dev/${DISK}3 $MOUNTROOT
+mkdir -p $MOUNTSHARE
+mount /dev/${DISK}2 $MOUNTSHARE
+mkdir -p $MOUNTBOOT
 mount /dev/${DISK}1 $MOUNTBOOT
 
 # Check if the Arch Linux image is already present.
@@ -44,12 +50,12 @@ sync
 # Generate the fstab and use the proper UUID
 genfstab -p $MOUNTROOT >> $FSTABFILE
 sync
-UUID1=$(grep -m 1 "# UUID" ${FSTABFILE} | sed 's/# //')
-sed -i "s/\/dev\/${DISK}2/${UUID1}/" ${FSTABFILE}
-sed -i "s/^# ${UUID1}//" ${FSTABFILE}
-UUID2=$(grep -m 1 "# UUID" ${FSTABFILE} | sed 's/# //')
-sed -i "s/\/dev\/${DISK}1/${UUID2}/" ${FSTABFILE}
-sed -i "s/^# ${UUID2}//" ${FSTABFILE}
+UUID1=$(blkid /dev/${DISK}3 | awk '{print $2}' | sed 's/"//g')
+sed -i "s/\/dev\/${DISK}3/${UUID1}/" ${FSTABFILE}
+UUID2=$(blkid /dev/${DISK}2 | awk '{print $2}' | sed 's/"//g')
+sed -i "s/\/dev\/${DISK}2/${UUID2}/" ${FSTABFILE}
+UUID3=$(blkid /dev/${DISK}1 | awk '{print $2}' | sed 's/"//g')
+sed -i "s/\/dev\/${DISK}1/${UUID3}/" ${FSTABFILE}
 sed -i 's/^\/\/.*//' ${FSTABFILE}
 sed -i 's/.*swap.*//' ${FSTABFILE} 
 sed -i "s/rw,relatime/defaults,noatime/g" ${FSTABFILE}
@@ -75,7 +81,7 @@ arch-chroot $MOUNTROOT ./Machine_Setup_Arch.sh $HOSTNAME
 
 # Get the Part UUID for rootfs and create the boot.cmd and boot.scr
 BOOTFILEPATH=$MOUNTBOOT/boot
-TARGET_PARTUUID=$(blkid /dev/${DISK}2 | awk '{print $5}' | sed 's/"//g')
+TARGET_PARTUUID=$(blkid /dev/${DISK}3 | awk '{print $5}' | sed 's/"//g')
 cat > ${BOOTFILEPATH}.cmd.bpim2z <<EOL
 part uuid \${devtype} \${devnum}:\${bootpart} uuid
 setenv bootargs console=tty1 console=serial0,115200 console=\${console} root=${TARGET_PARTUUID} rw rootwait audit=0
@@ -110,14 +116,15 @@ sync
 cd $MOUNTBOOT
 ./bootgen.sh
 
-# Copy the SSH key file secure connection instead of password
+# Copy the SSH key file secure connection to the SHARE directory.
 cd $CURRENTDIR
 if [ -f $MOUNTROOT/etc/ssh/ssh_host_rsa_key ]; then
-   cp $MOUNTROOT/etc/ssh/ssh_host_rsa_key ${CURRENTDIR}/BPiM2Z_key
+   cp $MOUNTROOT/etc/ssh/ssh_host_rsa_key ${MOUNTSHARE}/${HOSTNAME}_key
 fi
 
 # Unmount the partitions
 umount $MOUNTBOOT
+umount $MOUNTSHARE
 umount $MOUNTROOT
 
 # Generate the BIN file, copy it, and burn it.
